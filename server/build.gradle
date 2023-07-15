@@ -1,0 +1,49 @@
+plugins {
+    id 'java' apply true
+    id 'application'
+    id 'org.springframework.boot' version '3.1.0' apply true
+    id 'io.spring.dependency-management' version '1.1.0' apply true
+}
+
+group = "smart.cart.server"
+version = "1.5-stable"
+sourceCompatibility = "17"
+mainClassName = 'smart.cart.server.app.ServerApplication'
+jar.enabled = false
+bootJar.enabled = true;
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    // Google Firebase
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
+    // Proper Object Mapping
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // Local dependency
+    implementation project(':shared')
+
+    // Use JUnit Jupiter for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-cart-server-deployment
+spec:
+  selector:
+    matchLabels:
+      app: smart-cart-server-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: smart-cart-server-deployment
+    spec:
+      containers:
+        - name: smart-cart-server
+          image: smart-cart-server
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 10" ]
