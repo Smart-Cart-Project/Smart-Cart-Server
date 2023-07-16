@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import static smart.cart.server.app.util.ItemServiceUtils.*;
 
 @Service
+@SuppressWarnings("ConstantConditions")
 public class ItemService {
     private final Firestore firestoreDatabase;
 
@@ -23,7 +24,6 @@ public class ItemService {
         this.firestoreDatabase = FirestoreClient.getFirestore();
     }
 
-    @SuppressWarnings("ConstantConditions")
     public String saveItem(String cartId, String itemId) throws ExecutionException, InterruptedException {
         // Cart should be registered in the database
         DocumentReference registeredCartRef = firestoreDatabase.collection(REGISTERED_CARTS).document(cartId);
@@ -68,7 +68,6 @@ public class ItemService {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     public String deleteItem(String cartId, String itemId) throws ExecutionException, InterruptedException {
         // Cart should be registered in the database
         DocumentReference registeredCartRef = firestoreDatabase.collection(REGISTERED_CARTS).document(cartId);
@@ -103,7 +102,6 @@ public class ItemService {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     public List<Item> getAllItems(String cartId) throws ExecutionException, InterruptedException {
         // Cart should be registered in the database
         DocumentReference registeredCartRef = firestoreDatabase.collection(REGISTERED_CARTS).document(cartId);
@@ -129,6 +127,26 @@ public class ItemService {
             }
         } else {
             throw new MissingDocumentException(CART_IS_NOT_REGISTERED);
+        }
+    }
+
+    public String getItemIdForTag() throws ExecutionException, InterruptedException {
+        // Tag item should be registered in the database
+        DocumentSnapshot tagItem = firestoreDatabase.collection(TAGS_COLLECTION).document(TAG_ITEM).get().get();
+        if (tagItem.exists()) {
+            return (String) tagItem.get("itemId");
+        } else {
+            throw new MissingDocumentException(TAG_ITEM_DOES_NOT_EXIST);
+        }
+    }
+
+    public String setItemIdForTag(String id) throws ExecutionException, InterruptedException {
+        // Tag item should be registered in the database
+        DocumentReference tagItem = firestoreDatabase.collection(TAGS_COLLECTION).document(TAG_ITEM);
+        if (tagItem.get().get().exists()) {
+            return String.format(RESPONSE_MESSAGE, UPDATE, tagItem.update("itemId", id).get().getUpdateTime(), "none");
+        } else {
+            throw new MissingDocumentException(TAG_ITEM_DOES_NOT_EXIST);
         }
     }
 }

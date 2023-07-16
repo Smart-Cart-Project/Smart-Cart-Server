@@ -67,4 +67,30 @@ public class ItemController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/tags")
+    public ResponseEntity<String> getItemIdForTag() throws InterruptedException {
+        try {
+            return ResponseEntity.ok(itemsService.getItemIdForTag());
+        } catch (MissingDocumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/tags")
+    public ResponseEntity<String> setItemIdForTag(@RequestParam("itemId") String itemId) throws InterruptedException {
+        try {
+            return ResponseEntity.ok(itemsService.setItemIdForTag(itemId));
+        } catch (MissingDocumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

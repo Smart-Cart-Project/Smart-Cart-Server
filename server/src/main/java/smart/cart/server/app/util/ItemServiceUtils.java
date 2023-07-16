@@ -8,6 +8,8 @@ public final class ItemServiceUtils {
     public static final String ITEMS = "items";
     public static final String CARTS = "carts";
     public static final String REGISTERED_CARTS = "registered-carts";
+    public static final String TAGS_COLLECTION = "tagData";
+    public static final String TAG_ITEM = "tagItem";
     public static final String ITEM_ID = "itemId";
     public static final String ITEM_NAME = "itemName";
     public static final String PRICE = "price";
@@ -21,4 +23,5 @@ public final class ItemServiceUtils {
     public static final String CART_IS_NOT_REGISTERED = "Provided cartId is not registered in the system!";
     public static final String ITEM_DOES_NOT_EXIST = "Provided itemId is not registered in the system!";
     public static final String CART_ITEM_DOES_NOT_EXIST = "Item with the item ID \"%s\" does not exist in the cart with the ID \"%s\".";
+    public static final String TAG_ITEM_DOES_NOT_EXIST = "Item ID for the Tag does not exist, make sure to create it in the database.";
 }
